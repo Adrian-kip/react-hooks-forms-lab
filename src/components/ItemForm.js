@@ -1,17 +1,42 @@
-import React from "react";
-import { v4 as uuid } from "uuid";
+// src/components/ItemForm.js
+import React, { useState } from 'react';
 
-function ItemForm(props) {
+function ItemForm({ onItemFormSubmit }) {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("Produce");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onItemFormSubmit({
+      id: Math.random().toString(36).substr(2, 9),
+      name,
+      category
+    });
+    setName(""); // Reset form
+  }
+
   return (
-    <form className="NewItem">
-      <label>
+    <form onSubmit={handleSubmit} className="NewItem">
+      <label htmlFor="name-input">
         Name:
-        <input type="text" name="name" />
+        <input
+          id="name-input"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Item name"
+          data-testid="name-input"
+        />
       </label>
 
-      <label>
+      <label htmlFor="category-select">
         Category:
-        <select name="category">
+        <select
+          id="category-select"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          data-testid="category-select"
+        >
           <option value="Produce">Produce</option>
           <option value="Dairy">Dairy</option>
           <option value="Dessert">Dessert</option>
